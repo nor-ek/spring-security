@@ -54,6 +54,10 @@ public class UsernamePasswordAuthenticationToken extends AbstractAuthenticationT
 		setAuthenticated(false);
 	}
 
+	public static UsernamePasswordAuthenticationToken unauthenticated(Object principal, Object credentials) {
+		return new UsernamePasswordAuthenticationToken(principal, credentials);
+	}
+
 	/**
 	 * This constructor should only be used by <code>AuthenticationManager</code> or
 	 * <code>AuthenticationProvider</code> implementations that are satisfied with
@@ -69,6 +73,11 @@ public class UsernamePasswordAuthenticationToken extends AbstractAuthenticationT
 		this.principal = principal;
 		this.credentials = credentials;
 		super.setAuthenticated(true); // must use super, as we override
+	}
+
+	public static UsernamePasswordAuthenticationToken authenticated(Object principal, Object credentials,
+			Collection<? extends GrantedAuthority> authorities) {
+		return new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
 	}
 
 	@Override
