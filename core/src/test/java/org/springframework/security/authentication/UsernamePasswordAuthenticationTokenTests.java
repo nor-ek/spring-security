@@ -17,12 +17,13 @@
 package org.springframework.security.authentication;
 
 import org.junit.jupiter.api.Test;
-
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.springframework.security.authentication.UsernamePasswordAuthenticationToken.authenticated;
+import static org.springframework.security.authentication.UsernamePasswordAuthenticationToken.unauthenticated;
 
 /**
  * Tests {@link UsernamePasswordAuthenticationToken}.
@@ -69,6 +70,19 @@ public class UsernamePasswordAuthenticationTokenTests {
 		Class<?> clazz = UsernamePasswordAuthenticationToken.class;
 		assertThatExceptionOfType(NoSuchMethodException.class)
 				.isThrownBy(() -> clazz.getDeclaredConstructor((Class[]) null));
+	}
+
+	@Test
+	public void unauthenticatedFactoryMethodResultsUnauthenticatedToken() {
+		UsernamePasswordAuthenticationToken grantedToken = unauthenticated("Test", "Password");
+		assertThat(grantedToken.isAuthenticated()).isFalse();
+	}
+
+	@Test
+	public void authenticatedFactoryMethodResultsAuthenticatedToken() {
+		UsernamePasswordAuthenticationToken grantedToken = authenticated("Test",
+				"Password", AuthorityUtils.NO_AUTHORITIES);
+		assertThat(grantedToken.isAuthenticated()).isTrue();
 	}
 
 }
